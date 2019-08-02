@@ -37,7 +37,12 @@ functions:
       - http:
           path: book/all
           method: GET
-          integration: lambda-proxy
+          integration: lambda
+          request:
+            schema:
+              application/json: ${file(models/books.json)}    #crie o esquema json da classe produto dentro de pasta model
+            template:
+              application/json: $input.json('$')
 
   updateBook:
     handler: com.serverless.requests.UpdateBook

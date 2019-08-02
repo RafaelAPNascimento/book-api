@@ -15,43 +15,13 @@ import com.serverless.model.Book;
 
 import java.util.List;
 
-public class ListBooks implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class ListBooks implements RequestHandler<String, List<Book>> {
 
     private static LambdaLogger LOGGER;
 
     @Override
-    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent request, Context context) {
+    public List<Book> handleRequest(String request, Context context) {
 
-        LOGGER = context.getLogger();
-
-        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.defaultClient();
-        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-        DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(client);
-
-        LOGGER.log(String.format("====================== received request SaveBook:\n %s\n", request));
-
-        List<Book> Books = dynamoDBMapper.scan(Book.class, scanExpression);
-        Books.size();
-
-        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
-
-        if (!Books.isEmpty()) {
-
-            try {
-                ObjectMapper jsonMapper = new ObjectMapper();
-                response.setStatusCode(200);
-                response.setBody(jsonMapper.writeValueAsString(Books));
-            }
-            catch (JsonProcessingException e){
-                e.printStackTrace();
-                response.setStatusCode(500);
-                response.setBody(e.getMessage());
-            }
-        }
-        else{
-            response.setStatusCode(200);
-            response.setBody("Nenhum livro");
-        }
-        return response;
+        return null;
     }
 }

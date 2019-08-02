@@ -15,6 +15,7 @@ public class Book {
     private Double value;
     private String description;
     private String author;
+    private String info;
 
     public Book() {
     }
@@ -71,6 +72,14 @@ public class Book {
         this.author = author;
     }
 
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -79,6 +88,7 @@ public class Book {
                 ", value=" + value +
                 ", description='" + description + '\'' +
                 ", author='" + author + '\'' +
+                ", info='" + info + '\'' +
                 '}';
     }
 }

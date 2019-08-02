@@ -18,7 +18,6 @@ import java.util.Collections;
 
 public class ReadBook implements RequestHandler<Book, ApiGatewayResponse> {
 
-    private final String TABLE_BOOK = "Book";
     private static LambdaLogger LOGGER;
 
     @Override
@@ -26,21 +25,12 @@ public class ReadBook implements RequestHandler<Book, ApiGatewayResponse> {
 
         LOGGER = context.getLogger();
 
-        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.defaultClient();
-        DynamoDB dynamoDb = new DynamoDB(client);
-
-        if(input != null && input.getId() != null){
-
-            Table table = dynamoDb.getTable(TABLE_BOOK);
-            Item item = table.getItem("id", input.getId());
-            String json = item.toJSONPretty();
-            return ApiGatewayResponse.builder().setStatusCode(200).setObjectBody(json).build();
-        }
+        input.setInfo("Read Request Info");
 
         return ApiGatewayResponse.builder()
                 .setStatusCode(404)
                 .setObjectBody(new Response("Book not found", Collections.singletonMap("Book", input)))
-                .setHeaders(Collections.singletonMap("X-Powered-By", "UOL"))
+                .setHeaders(Collections.singletonMap("X-Powered-By", "FinalException"))
                 .build();
     }
 }

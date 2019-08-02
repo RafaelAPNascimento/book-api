@@ -15,6 +15,9 @@
     },
     "author" : {
       "type" : "string"
+    },
+    "info" : {
+      "type" : "string"
     }
   }
 }
