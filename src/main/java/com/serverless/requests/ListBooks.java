@@ -11,17 +11,26 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.serverless.ApiGatewayResponse;
 import com.serverless.model.Book;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-public class ListBooks implements RequestHandler<String, List<Book>> {
+public class ListBooks implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
     private static LambdaLogger LOGGER;
 
     @Override
-    public List<Book> handleRequest(String request, Context context) {
+    public ApiGatewayResponse handleRequest(Map<String, Object> request, Context context) {
 
-        return null;
+        List<Book> books = Arrays.asList(new Book(1L, "book1", 9.99, "description A", "author A"),
+                new Book(2L, "book1", 9.99, "description A", "author A"),
+                new Book(3L, "book1", 9.99, "description A", "author A"),
+                new Book(4L, "book1", 9.99, "description A", "author A"),
+                new Book(5L, "book1", 9.99, "description A", "author A"));
+
+        return ApiGatewayResponse.builder().setStatusCode(200).setObjectBody(books).build();
     }
 }

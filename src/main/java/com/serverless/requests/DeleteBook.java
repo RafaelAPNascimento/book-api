@@ -19,7 +19,6 @@ import java.util.Map;
 
 public class DeleteBook implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-    private static final String DYNAMO_TABLE_NAME = System.getenv("TABLE_NAME");
     private static LambdaLogger LOGGER;
 
     @Override
@@ -31,25 +30,11 @@ public class DeleteBook implements RequestHandler<APIGatewayProxyRequestEvent, A
 
         try {
             String paramId = req.getPathParameters().get("id");
-
+            LOGGER.log(String.format("====================== received request DeleteBook:\n %s\n", paramId));
             if (paramId != null) {
 
-                Long id = Long.parseLong(paramId);
-                AmazonDynamoDB dbClient = AmazonDynamoDBClientBuilder.defaultClient();
-                DynamoDB dynamoDB = new DynamoDB(dbClient);
-                Table table = dynamoDB.getTable(DYNAMO_TABLE_NAME);
-
-                DeleteItemSpec del = new DeleteItemSpec()
-                        .withPrimaryKey("id", id)
-                        .withReturnValues(ReturnValue.ALL_OLD);
-
-                DeleteItemOutcome outcome = table.deleteItem(del);
-                DeleteItemResult deleteItem = outcome.getDeleteItemResult();
-
-                if (deleteItem != null) {
-                    response.setStatusCode(200);
-                    responseBody = deleteItem.toString();
-                }
+                response.setStatusCode(200);
+                responseBody = "Book deleted";
             }
             else{
                 LOGGER.log("ID parametro inválido'");

@@ -32,20 +32,10 @@ public class SaveBook implements RequestHandler<APIGatewayProxyRequestEvent, API
 
             if(requestBody != null){
 
-                Book Book = mapper.readValue(requestBody, Book.class);
-
-                AmazonDynamoDB dbClient = AmazonDynamoDBClientBuilder.defaultClient();
-                DynamoDB dynamoDB = new DynamoDB(dbClient);
-
-                Item BookItem = new Item().withNumber("id", Book.getId())
-                        .with("name", Book.getName())
-                        .withDouble("value", Book.getValue())
-                        .with("description", Book.getDescription());
-
-                dynamoDB.getTable(DYNAMO_TABLE_NAME).putItem(new PutItemSpec().withItem(BookItem));
-
+                Book book = mapper.readValue(requestBody, Book.class);
+                book.setInfo("Book saved!");
                 responseEvent.setStatusCode(200);
-                responseEvent.setBody(mapper.writeValueAsString(Book));
+                responseEvent.setBody(mapper.writeValueAsString(book));
             }
         }
         catch (Exception e){

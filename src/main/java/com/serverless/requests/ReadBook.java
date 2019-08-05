@@ -24,12 +24,12 @@ public class ReadBook implements RequestHandler<Book, ApiGatewayResponse> {
     public ApiGatewayResponse handleRequest(Book input, Context context) {
 
         LOGGER = context.getLogger();
-
-        input.setInfo("Read Request Info");
+        input = new Book(1L, "book1", 9.99, "description A", "author A");
+        input.setInfo("Read Request Info. Red book with id: "+input.getId());
 
         return ApiGatewayResponse.builder()
-                .setStatusCode(404)
-                .setObjectBody(new Response("Book not found", Collections.singletonMap("Book", input)))
+                .setStatusCode(200)
+                .setObjectBody(input.toString())
                 .setHeaders(Collections.singletonMap("X-Powered-By", "FinalException"))
                 .build();
     }
